@@ -1,0 +1,2598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel AI Discovery Form - SpotzyAI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(20, 52, 164, 0.03) 1px, transparent 1px),
+                linear-gradient(rgba(20, 52, 164, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .language-selector {
+            max-width: 1100px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .language-selector label {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 0.95em;
+        }
+        
+        .language-selector select {
+            padding: 10px 16px;
+            border: 2px solid #1434A4;
+            border-radius: 8px;
+            background: white;
+            color: #1434A4;
+            font-weight: 600;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .language-selector select:hover {
+            background: #1434A4;
+            color: white;
+        }
+        
+        .language-selector select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(20, 52, 164, 0.2);
+        }
+        
+        .form-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.08),
+                0 0 1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: white;
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(20, 52, 164, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: #1434A4;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.85;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+        
+        .form-content {
+            padding: 50px 40px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            padding: 35px;
+            border: 2px solid #f0f0f0;
+            border-radius: 16px;
+            background: #fafbfc;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            border-color: #1434A4;
+            box-shadow: 0 8px 24px rgba(20, 52, 164, 0.08);
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            color: #000;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1434A4 0%, #0f2875 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .form-group {
+            margin-bottom: 28px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-size: 1em;
+            letter-spacing: -0.2px;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="email"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: white;
+            color: #1a1a1a;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1434A4;
+            box-shadow: 0 0 0 3px rgba(20, 52, 164, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .checkbox-grid.compact {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 14px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+        }
+        
+        .checkbox-item:hover {
+            border-color: #1434A4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(20, 52, 164, 0.1);
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #1434A4;
+            flex-shrink: 0;
+        }
+        
+        .checkbox-item input[type="radio"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #1434A4;
+            flex-shrink: 0;
+        }
+        
+        .checkbox-item.checked {
+            border-color: #1434A4;
+            background: linear-gradient(135deg, rgba(20, 52, 164, 0.05) 0%, rgba(20, 52, 164, 0.02) 100%);
+        }
+        
+        .checkbox-item label {
+            cursor: pointer;
+            font-weight: 500;
+            margin: 0;
+            color: #1a1a1a;
+            font-size: 0.95em;
+            flex: 1;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+        
+        .radio-item:hover {
+            border-color: #1434A4;
+        }
+        
+        .radio-item input[type="radio"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #1434A4;
+        }
+        
+        .radio-item.selected {
+            border-color: #1434A4;
+            background: linear-gradient(135deg, rgba(20, 52, 164, 0.05) 0%, rgba(20, 52, 164, 0.02) 100%);
+        }
+        
+        .help-text {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-top: 6px;
+            font-style: italic;
+        }
+        
+        .language-search {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .language-search input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .language-search input:focus {
+            outline: none;
+            border-color: #1434A4;
+            box-shadow: 0 0 0 3px rgba(20, 52, 164, 0.1);
+        }
+        
+        .checkbox-item.hidden {
+            display: none;
+        }
+        
+        .conditional-field {
+            padding: 18px;
+            background: #f9fafb;
+            border: 2px dashed #d1d5db;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .conditional-field.active {
+            background: #eff6ff;
+            border-color: #1434A4;
+        }
+        
+        .conditional-field label {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .conditional-field input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .conditional-field input:focus {
+            outline: none;
+            border-color: #1434A4;
+            box-shadow: 0 0 0 3px rgba(20, 52, 164, 0.1);
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .btn {
+            padding: 18px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: -0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1434A4 0%, #0f2875 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(20, 52, 164, 0.3);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(20, 52, 164, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #000;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: #1a1a1a;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .add-field-btn {
+            background: linear-gradient(135deg, #1434A4 0%, #0f2875 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-field-btn:hover {
+            box-shadow: 0 4px 12px rgba(20, 52, 164, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .dynamic-field {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            align-items: center;
+        }
+        
+        .dynamic-field input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+        
+        .remove-field-btn {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .remove-field-btn:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+        
+        .required {
+            color: #1434A4;
+            margin-left: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 40px 30px;
+            }
+            
+            .form-content {
+                padding: 40px 30px;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .language-selector {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <label for="language-select" data-i18n="languageLabel">Language:</label>
+        <select id="language-select" onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="el">Ελληνικά</option>
+        </select>
+    </div>
+
+    <div class="form-container">
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">AI</div>
+                    <div class="logo-text">SpotzyAI</div>
+                </div>
+                <h1 data-i18n="headerTitle">Hotel AI Discovery Form</h1>
+                <p data-i18n="headerDescription">Let's understand your hotel's needs to design the ideal AI voice assistant solution.</p>
+            </div>
+        </div>
+
+        <form id="discoveryForm" class="form-content">
+            
+            <!-- Section 1: Basic Info -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">H</span>
+                    <span data-i18n="section1Title">Basic Hotel Information</span>
+                </h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="hotelName">Hotel Name <span class="required">*</span></label>
+                        <input type="text" name="hotel-name" required data-i18n-placeholder="hotelNamePlaceholder">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="hotelBrand">Brand / Chain</label>
+                        <input type="text" name="hotel-brand" data-i18n-placeholder="hotelBrandPlaceholder">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="hotelAddress">Address <span class="required">*</span></label>
+                    <input type="text" name="hotel-address" required data-i18n-placeholder="hotelAddressPlaceholder">
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="hotelCategory">Hotel Category <span class="required">*</span></label>
+                    <p class="help-text" style="margin-bottom: 15px;" data-i18n="hotelCategoryHelp">Select all that apply:</p>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat-3star" name="hotel-category" value="3-star">
+                            <label for="cat-3star">3 Star</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat-4star" name="hotel-category" value="4-star">
+                            <label for="cat-4star">4 Star</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat-5star" name="hotel-category" value="5-star">
+                            <label for="cat-5star">5 Star</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat-boutique" name="hotel-category" value="boutique">
+                            <label for="cat-boutique" data-i18n="catBoutique">Boutique Hotel</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat-resort" name="hotel-category" value="resort">
+                            <label for="cat-resort" data-i18n="catResort">Resort</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat-luxury" name="hotel-category" value="luxury">
+                            <label for="cat-luxury" data-i18n="catLuxury">Premium Collection</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat-beach" name="hotel-category" value="beach">
+                            <label for="cat-beach" data-i18n="catBeach">Beach Hotel</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cat-city" name="hotel-category" value="city">
+                            <label for="cat-city" data-i18n="catCity">City Hotel</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="customerType">Customer Type</label>
+                    <p class="help-text" style="margin-bottom: 15px;" data-i18n="customerTypeHelp">Select all that apply:</p>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="guest-business" name="customer-type" value="business">
+                            <label for="guest-business" data-i18n="guestBusiness">Business Travelers</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="guest-leisure" name="customer-type" value="leisure">
+                            <label for="guest-leisure" data-i18n="guestLeisure">Leisure / Vacation</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="guest-families" name="customer-type" value="families">
+                            <label for="guest-families" data-i18n="guestFamilies">Families</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="guest-couples" name="customer-type" value="couples">
+                            <label for="guest-couples" data-i18n="guestCouples">Couples Only</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="guest-all-inclusive" name="customer-type" value="all-inclusive">
+                            <label for="guest-all-inclusive" data-i18n="guestAllInclusive">All-Inclusive</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="guest-luxury-vip" name="customer-type" value="luxury">
+                            <label for="guest-luxury-vip" data-i18n="guestLuxury">Luxury / VIP</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="operationPeriod">Operation Period</label>
+                    <select name="operation-period" id="operation-period" onchange="toggleSeasonalMonths()">
+                        <option value="" data-i18n="selectOption">Select...</option>
+                        <option value="year-round" data-i18n="opYearRound">Year-round</option>
+                        <option value="seasonal" data-i18n="opSeasonal">Seasonal</option>
+                    </select>
+                    
+                    <!-- Conditional fields for Seasonal -->
+                    <div id="seasonal-months" class="conditional-field" style="display: none; margin-top: 15px;">
+                        <p class="help-text" style="margin-bottom: 12px; font-weight: 600; color: #1a1a1a;" data-i18n="seasonalMonthsLabel">Please specify your operation period:</p>
+                        <div class="form-row">
+                            <div>
+                                <label data-i18n="fromMonth">From Month</label>
+                                <select name="operation-from-month" id="operation-from-month">
+                                    <option value="" data-i18n="selectOption">Select...</option>
+                                    <option value="1" data-i18n="monthJan">January</option>
+                                    <option value="2" data-i18n="monthFeb">February</option>
+                                    <option value="3" data-i18n="monthMar">March</option>
+                                    <option value="4" data-i18n="monthApr">April</option>
+                                    <option value="5" data-i18n="monthMay">May</option>
+                                    <option value="6" data-i18n="monthJun">June</option>
+                                    <option value="7" data-i18n="monthJul">July</option>
+                                    <option value="8" data-i18n="monthAug">August</option>
+                                    <option value="9" data-i18n="monthSep">September</option>
+                                    <option value="10" data-i18n="monthOct">October</option>
+                                    <option value="11" data-i18n="monthNov">November</option>
+                                    <option value="12" data-i18n="monthDec">December</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label data-i18n="toMonth">To Month</label>
+                                <select name="operation-to-month" id="operation-to-month">
+                                    <option value="" data-i18n="selectOption">Select...</option>
+                                    <option value="1" data-i18n="monthJan">January</option>
+                                    <option value="2" data-i18n="monthFeb">February</option>
+                                    <option value="3" data-i18n="monthMar">March</option>
+                                    <option value="4" data-i18n="monthApr">April</option>
+                                    <option value="5" data-i18n="monthMay">May</option>
+                                    <option value="6" data-i18n="monthJun">June</option>
+                                    <option value="7" data-i18n="monthJul">July</option>
+                                    <option value="8" data-i18n="monthAug">August</option>
+                                    <option value="9" data-i18n="monthSep">September</option>
+                                    <option value="10" data-i18n="monthOct">October</option>
+                                    <option value="11" data-i18n="monthNov">November</option>
+                                    <option value="12" data-i18n="monthDec">December</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Departments to Automate -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">D</span>
+                    <span data-i18n="section2Title">What would you like to automate?</span>
+                </h2>
+                <p class="help-text" style="margin-bottom: 20px;" data-i18n="section2Help">Select all departments that interest you:</p>
+                
+                <div class="checkbox-grid">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dept-front-desk" name="departments" value="front-desk">
+                        <label for="dept-front-desk" data-i18n="deptFrontDesk">Front Desk / Reception</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dept-reservations" name="departments" value="reservations">
+                        <label for="dept-reservations" data-i18n="deptReservations">Room Reservations</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dept-restaurant-bar" name="departments" value="restaurant-bar">
+                        <label for="dept-restaurant-bar" data-i18n="deptRestaurantBar">Restaurant / Bar Reservations</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dept-room-service" name="departments" value="room-service">
+                        <label for="dept-room-service" data-i18n="deptRoomService">Room Service</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dept-spa" name="departments" value="spa">
+                        <label for="dept-spa" data-i18n="deptSpa">Spa</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dept-events" name="departments" value="events">
+                        <label for="dept-events" data-i18n="deptEvents">Events / Weddings / Conferences</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dept-housekeeping" name="departments" value="housekeeping">
+                        <label for="dept-housekeeping" data-i18n="deptHousekeeping">Housekeeping / Maintenance</label>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 30px;">
+                    <label data-i18n="otherDepartments">Other Departments:</label>
+                    <div id="other-departments-container"></div>
+                    <button type="button" class="add-field-btn" onclick="addOtherDepartment()">
+                        <span data-i18n="addDepartmentBtn">+ Add Department</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section 3: Call Volumes -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">C</span>
+                    <span data-i18n="section3Title">Call Volumes & Hours</span>
+                </h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="avgCallsPeak">Average calls per day (Peak Season)</label>
+                        <select name="call-volume-peak" id="call-volume-peak" onchange="toggleApproxField('peak')">
+                            <option value="" data-i18n="selectOption">Select...</option>
+                            <option value="low" data-i18n="callVolLow">Low (1-50 calls/day)</option>
+                            <option value="medium" data-i18n="callVolMedium">Medium (50-150 calls/day)</option>
+                            <option value="high" data-i18n="callVolHigh">High (150-300 calls/day)</option>
+                            <option value="very-high" data-i18n="callVolVeryHigh">Very High (300+ calls/day)</option>
+                        </select>
+                        <p class="help-text" data-i18n="avgCallsPeakHelp">e.g. July-August for summer destinations</p>
+                        
+                        <!-- Conditional field for Very High -->
+                        <div id="approx-peak" class="conditional-field" style="display: none; margin-top: 15px;">
+                            <label data-i18n="approxCalls">Approximately how many calls per day?</label>
+                            <input type="number" name="approx-calls-peak" min="300" max="2000" data-i18n-placeholder="approxCallsPlaceholder">
+                            <p class="help-text" data-i18n="approxCallsHelp">Please specify for more accurate pricing</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="avgCallsLow">Average calls per day (Low Season)</label>
+                        <select name="call-volume-low" id="call-volume-low" onchange="toggleApproxField('low')">
+                            <option value="" data-i18n="selectOption">Select...</option>
+                            <option value="low" data-i18n="callVolLow">Low (1-50 calls/day)</option>
+                            <option value="medium" data-i18n="callVolMedium">Medium (50-150 calls/day)</option>
+                            <option value="high" data-i18n="callVolHigh">High (150-300 calls/day)</option>
+                            <option value="very-high" data-i18n="callVolVeryHigh">Very High (300+ calls/day)</option>
+                        </select>
+                        <p class="help-text" data-i18n="avgCallsLowHelp">e.g. November-March for seasonal hotels</p>
+                        
+                        <!-- Conditional field for Very High -->
+                        <div id="approx-low" class="conditional-field" style="display: none; margin-top: 15px;">
+                            <label data-i18n="approxCalls">Approximately how many calls per day?</label>
+                            <input type="number" name="approx-calls-low" min="300" max="2000" data-i18n-placeholder="approxCallsPlaceholder">
+                            <p class="help-text" data-i18n="approxCallsHelp">Please specify for more accurate pricing</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="concurrentCalls">How many concurrent calls would satisfy your needs?</label>
+                    <input type="number" name="concurrent-calls" min="1" max="50" data-i18n-placeholder="concurrentCallsPlaceholder">
+                    <p class="help-text" data-i18n="concurrentCallsHelp">Number of calls that can be handled simultaneously by the AI system (per department)</p>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="peakHours">Peak call hours</label>
+                    <input type="text" name="peak-hours" data-i18n-placeholder="peakHoursPlaceholder">
+                    <p class="help-text" data-i18n="peakHoursHelp">When do you receive the most calls?</p>
+                </div>
+            </div>
+
+            <!-- Section 4: Languages -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">L</span>
+                    <span data-i18n="section4Title">Languages & Markets</span>
+                </h2>
+                
+                <div class="form-group">
+                    <label data-i18n="languagesNeeded">Languages needed <span class="required">*</span></label>
+                    <p class="help-text" style="margin-bottom: 15px;" data-i18n="languagesNeededHelp">Select all languages you need:</p>
+                    
+                    <div class="language-search">
+                        <input type="text" id="language-search-input" data-i18n-placeholder="languageSearchPlaceholder" placeholder="Search languages...">
+                    </div>
+                    
+                    <div class="checkbox-grid compact" id="languages-grid">
+                        <!-- Row 1 -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-english" name="languages" value="english" checked>
+                            <label for="lang-english">English</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-spanish" name="languages" value="spanish">
+                            <label for="lang-spanish">Spanish</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-french" name="languages" value="french">
+                            <label for="lang-french">French</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-chinese" name="languages" value="chinese">
+                            <label for="lang-chinese">Chinese</label>
+                        </div>
+                        
+                        <!-- Row 2 -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-german" name="languages" value="german">
+                            <label for="lang-german">German</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-italian" name="languages" value="italian">
+                            <label for="lang-italian">Italian</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-portuguese" name="languages" value="portuguese">
+                            <label for="lang-portuguese">Portuguese</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-arabic" name="languages" value="arabic">
+                            <label for="lang-arabic">Arabic</label>
+                        </div>
+                        
+                        <!-- Row 3 -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-japanese" name="languages" value="japanese">
+                            <label for="lang-japanese">Japanese</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-hindi" name="languages" value="hindi">
+                            <label for="lang-hindi">Hindi</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-russian" name="languages" value="russian">
+                            <label for="lang-russian">Russian</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-dutch" name="languages" value="dutch">
+                            <label for="lang-dutch">Dutch</label>
+                        </div>
+                        
+                        <!-- Row 4 -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-polish" name="languages" value="polish">
+                            <label for="lang-polish">Polish</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-turkish" name="languages" value="turkish">
+                            <label for="lang-turkish">Turkish</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-swedish" name="languages" value="swedish">
+                            <label for="lang-swedish">Swedish</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-danish" name="languages" value="danish">
+                            <label for="lang-danish">Danish</label>
+                        </div>
+                        
+                        <!-- Row 5 -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-norwegian" name="languages" value="norwegian">
+                            <label for="lang-norwegian">Norwegian</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-czech" name="languages" value="czech">
+                            <label for="lang-czech">Czech</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-finnish" name="languages" value="finnish">
+                            <label for="lang-finnish">Finnish</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-bulgarian" name="languages" value="bulgarian">
+                            <label for="lang-bulgarian">Bulgarian</label>
+                        </div>
+                        
+                        <!-- Row 6 -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-greek" name="languages" value="greek" checked>
+                            <label for="lang-greek">Greek</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-hungarian" name="languages" value="hungarian">
+                            <label for="lang-hungarian">Hungarian</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-ukrainian" name="languages" value="ukrainian">
+                            <label for="lang-ukrainian">Ukrainian</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-filipino" name="languages" value="filipino">
+                            <label for="lang-filipino">Filipino</label>
+                        </div>
+                        
+                        <!-- Row 7 -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-croatian" name="languages" value="croatian">
+                            <label for="lang-croatian">Croatian</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-hebrew" name="languages" value="hebrew">
+                            <label for="lang-hebrew">Hebrew</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-romanian" name="languages" value="romanian">
+                            <label for="lang-romanian">Romanian</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-urdu" name="languages" value="urdu">
+                            <label for="lang-urdu">Urdu</label>
+                        </div>
+                        
+                        <!-- Row 8 -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-lithuanian" name="languages" value="lithuanian">
+                            <label for="lang-lithuanian">Lithuanian</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-slovenian" name="languages" value="slovenian">
+                            <label for="lang-slovenian">Slovenian</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-tamil" name="languages" value="tamil">
+                            <label for="lang-tamil">Tamil</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-georgian" name="languages" value="georgian">
+                            <label for="lang-georgian">Georgian</label>
+                        </div>
+                        
+                        <!-- Row 9 -->
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-kazakh" name="languages" value="kazakh">
+                            <label for="lang-kazakh">Kazakh</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-swiss-german" name="languages" value="swiss-german">
+                            <label for="lang-swiss-german">Swiss German</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-uzbek" name="languages" value="uzbek">
+                            <label for="lang-uzbek">Uzbek</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="lang-albanian" name="languages" value="albanian">
+                            <label for="lang-albanian">Albanian</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 25px;">
+                    <label data-i18n="mainMarkets">Main customer markets</label>
+                    <input type="text" name="main-markets" data-i18n-placeholder="mainMarketsPlaceholder">
+                    <p class="help-text" data-i18n="mainMarketsHelp">This helps us adjust the tone and examples</p>
+                </div>
+            </div>
+
+            <!-- Section 5: Systems & Integrations -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">S</span>
+                    <span data-i18n="section5Title">Systems & Integrations</span>
+                </h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="pmsSystem">Property Management System (PMS)</label>
+                        <select name="pms-system" id="pms-system" onchange="toggleOtherPMS()">
+                            <option value="" data-i18n="selectOption">Select...</option>
+                            <option value="opera">Oracle Opera</option>
+                            <option value="protel">Protel</option>
+                            <option value="cloudbeds">Cloudbeds</option>
+                            <option value="mews">Mews</option>
+                            <option value="hoteliga">Hoteliga</option>
+                            <option value="roomraccoon">RoomRaccoon</option>
+                            <option value="other" data-i18n="pmsOther">Other</option>
+                            <option value="none" data-i18n="pmsNone">We don't use a PMS</option>
+                        </select>
+                        
+                        <!-- Conditional field for Other PMS -->
+                        <div id="other-pms" class="conditional-field" style="display: none; margin-top: 15px;">
+                            <label data-i18n="otherPMSLabel">Please specify which PMS you use:</label>
+                            <input type="text" name="other-pms-name" data-i18n-placeholder="otherPMSPlaceholder">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="channelManager">Channel Manager / Booking Engine</label>
+                        <input type="text" name="channel-manager" data-i18n-placeholder="channelManagerPlaceholder">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="integrationLevel">Desired integration level</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="integration-full" name="integration-level" value="full" onchange="toggleLeadCaptureChannels()">
+                            <label for="integration-full" data-i18n="integrationFull">Full Integration with PMS (real-time availability, bookings)</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" id="integration-lead" name="integration-level" value="lead-capture" onchange="toggleLeadCaptureChannels()">
+                            <label for="integration-lead" data-i18n="integrationLead">Lead Capture (AI sends email / WhatsApp / SMS to reception / real person)</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" id="integration-not-sure" name="integration-level" value="not-sure" onchange="toggleLeadCaptureChannels()">
+                            <label for="integration-not-sure" data-i18n="integrationNotSure">Not sure - need consultation</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Conditional field for Lead Capture channels -->
+                    <div id="lead-capture-channels" class="conditional-field" style="display: none; margin-top: 20px;">
+                        <p class="help-text" style="margin-bottom: 15px; font-weight: 600; color: #1a1a1a;" data-i18n="leadCaptureChannelsLabel">How would you like to receive lead information? (Select all that apply)</p>
+                        
+                        <div class="checkbox-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="channel-email" name="lead-channels" value="email">
+                                <label for="channel-email" data-i18n="channelEmail">Email</label>
+                            </div>
+                            
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="channel-whatsapp" name="lead-channels" value="whatsapp">
+                                <label for="channel-whatsapp" data-i18n="channelWhatsApp">WhatsApp</label>
+                            </div>
+                            
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="channel-sms" name="lead-channels" value="sms">
+                                <label for="channel-sms" data-i18n="channelSMS">SMS</label>
+                            </div>
+                            
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="channel-other" name="lead-channels" value="other" onchange="toggleOtherChannel()">
+                                <label for="channel-other" data-i18n="channelOther">Other</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Conditional field for Other channel -->
+                        <div id="other-channel" style="display: none; margin-top: 15px;">
+                            <label data-i18n="otherChannelLabel">Please specify your preferred method:</label>
+                            <input type="text" name="other-channel-method" data-i18n-placeholder="otherChannelPlaceholder" style="width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1em; margin-top: 8px;">
+                            <p class="help-text" data-i18n="otherChannelHelp">e.g. Telegram, Slack, Custom API, etc.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: Priorities -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">P</span>
+                    <span data-i18n="section6Title">Priorities & Goals</span>
+                </h2>
+                
+                <div class="form-group">
+                    <label data-i18n="prioritiesLabel">Which 1-3 use cases are most urgent for you?</label>
+                    <p class="help-text" style="margin-bottom: 15px;" data-i18n="prioritiesHelp">Select the most important:</p>
+                    
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="priority-missed" name="priorities" value="missed-calls">
+                            <label for="priority-missed" data-i18n="priorityMissed">Reduce missed calls</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="priority-vip" name="priorities" value="vip-experience">
+                            <label for="priority-vip" data-i18n="priorityVIP">Improve VIP experience</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="priority-workload" name="priorities" value="reduce-workload">
+                            <label for="priority-workload" data-i18n="priorityWorkload">Reduce front desk workload from repetitive questions</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="priority-bookings" name="priorities" value="direct-bookings">
+                            <label for="priority-bookings" data-i18n="priorityBookings">Increase direct bookings (instead of OTA)</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="priority-upsell" name="priorities" value="upselling">
+                            <label for="priority-upsell" data-i18n="priorityUpsell">Upselling: spa, late checkout, dining, etc.</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="priority-afterhours" name="priorities" value="after-hours">
+                            <label for="priority-afterhours" data-i18n="priorityAfterHours">After-hours coverage (late night / early morning)</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="priority-consistency" name="priorities" value="consistency">
+                            <label for="priority-consistency" data-i18n="priorityConsistency">Consistency in service quality across shifts</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="priority-analytics" name="priorities" value="analytics">
+                            <label for="priority-analytics" data-i18n="priorityAnalytics">Detailed call logging & analytics</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 7: Data & Privacy -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">R</span>
+                    <span data-i18n="section7Title">Data & Privacy</span>
+                </h2>
+                
+                <div class="form-group">
+                    <div class="checkbox-item" style="padding: 18px; border: 2px solid #e5e7eb;">
+                        <input type="checkbox" id="call-recordings-consent" name="call-recordings-consent" required>
+                        <label for="call-recordings-consent" style="margin: 0;">
+                            <span data-i18n="recordingsConsentLabel">I understand and agree that calls will be recorded for quality assurance and training purposes.</span>
+                            <span style="display: block; margin-top: 8px; font-size: 0.9em; color: #6b7280; font-style: italic;" data-i18n="recordingsConsentNote">(This will be formally documented in the service agreement for GDPR compliance)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 8: Implementation Approach -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">I</span>
+                    <span data-i18n="section8Title">Implementation Approach</span>
+                </h2>
+                
+                <div class="form-group">
+                    <label data-i18n="implementationLabel">How would you like to start?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="impl-pilot" name="implementation" value="pilot">
+                            <label for="impl-pilot" data-i18n="implPilot">Start with pilot (1 department, 1 month trial)</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" id="impl-full" name="implementation" value="full">
+                            <label for="impl-full" data-i18n="implFull">Full deployment across selected departments</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" id="impl-phased" name="implementation" value="phased">
+                            <label for="impl-phased" data-i18n="implPhased">Phased rollout (priority departments first)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">@</span>
+                    <span data-i18n="section9Title">Contact Information</span>
+                </h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="contactName">Contact Name <span class="required">*</span></label>
+                        <input type="text" name="contact-name" required data-i18n-placeholder="contactNamePlaceholder">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="contactRole">Position / Role</label>
+                        <input type="text" name="contact-role" data-i18n-placeholder="contactRolePlaceholder">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="contactEmail">Email <span class="required">*</span></label>
+                        <input type="email" name="contact-email" required placeholder="example@hotel.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="contactPhone">Phone <span class="required">*</span></label>
+                        <input type="text" name="contact-phone" required placeholder="+357 99 123456">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="additionalNotes">Additional notes or questions</label>
+                    <textarea name="additional-notes" rows="4" data-i18n-placeholder="additionalNotesPlaceholder"></textarea>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-primary">
+                    <span data-i18n="submitBtn">Submit Form</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Translations
+        const translations = {
+            en: {
+                languageLabel: "Language:",
+                headerTitle: "Hotel AI Discovery Form",
+                headerDescription: "Let's understand your hotel's needs to design the ideal AI voice assistant solution.",
+                
+                // Section 1
+                section1Title: "Basic Hotel Information",
+                hotelName: "Hotel Name",
+                hotelNamePlaceholder: "e.g. Seaside Grand Hotel",
+                hotelBrand: "Brand / Chain",
+                hotelBrandPlaceholder: "e.g. Premium Collection, independent",
+                hotelAddress: "Address",
+                hotelAddressPlaceholder: "e.g. 123 Seaside Avenue, Limassol, 3000, Cyprus",
+                hotelCategory: "Hotel Category",
+                hotelCategoryHelp: "Select all that apply:",
+                catBoutique: "Boutique Hotel",
+                catResort: "Resort",
+                catLuxury: "Premium Collection",
+                catBeach: "Beach Hotel",
+                catCity: "City Hotel",
+                customerType: "Customer Type",
+                customerTypeHelp: "Select all that apply:",
+                guestBusiness: "Business Travelers",
+                guestLeisure: "Leisure / Vacation",
+                guestFamilies: "Families",
+                guestCouples: "Couples Only",
+                guestAllInclusive: "All-Inclusive",
+                guestLuxury: "Luxury / VIP",
+                operationPeriod: "Operation Period",
+                selectOption: "Select...",
+                opYearRound: "Year-round",
+                opSeasonal: "Seasonal",
+                seasonalMonthsLabel: "Please specify your operation period:",
+                fromMonth: "From Month",
+                toMonth: "To Month",
+                monthJan: "January",
+                monthFeb: "February",
+                monthMar: "March",
+                monthApr: "April",
+                monthMay: "May",
+                monthJun: "June",
+                monthJul: "July",
+                monthAug: "August",
+                monthSep: "September",
+                monthOct: "October",
+                monthNov: "November",
+                monthDec: "December",
+                
+                // Section 2
+                section2Title: "What would you like to automate?",
+                section2Help: "Select all departments that interest you:",
+                deptFrontDesk: "Front Desk / Reception",
+                deptReservations: "Room Reservations",
+                deptRestaurantBar: "Restaurant / Bar Reservations",
+                deptRoomService: "Room Service",
+                deptSpa: "Spa",
+                deptEvents: "Events / Weddings / Conferences",
+                deptHousekeeping: "Housekeeping / Maintenance",
+                otherDepartments: "Other Departments:",
+                addDepartmentBtn: "+ Add Department",
+                
+                // Section 3
+                section3Title: "Call Volumes & Hours",
+                avgCallsPeak: "Average calls per day (Peak Season)",
+                avgCallsPeakHelp: "e.g. July-August for summer destinations",
+                avgCallsLow: "Average calls per day (Low Season)",
+                avgCallsLowHelp: "e.g. November-March for seasonal hotels",
+                approxCalls: "Approximately how many calls per day?",
+                approxCallsPlaceholder: "e.g. 450",
+                approxCallsHelp: "Please specify for more accurate pricing",
+                callVolLow: "Low (1-50 calls/day)",
+                callVolMedium: "Medium (50-150 calls/day)",
+                callVolHigh: "High (150-300 calls/day)",
+                callVolVeryHigh: "Very High (300+ calls/day)",
+                concurrentCalls: "How many concurrent calls would satisfy your needs?",
+                concurrentCallsPlaceholder: "e.g. 5",
+                concurrentCallsHelp: "Number of calls that can be handled simultaneously by the AI system (per department)",
+                peakHours: "Peak call hours",
+                peakHoursPlaceholder: "e.g. 09:00-12:00 & 18:00-21:00",
+                peakHoursHelp: "When do you receive the most calls?",
+                
+                // Section 4
+                section4Title: "Languages & Markets",
+                languagesNeeded: "Languages needed",
+                languagesNeededHelp: "Select all languages you need:",
+                languageSearchPlaceholder: "Search languages...",
+                mainMarkets: "Main customer markets",
+                mainMarketsPlaceholder: "e.g. UK, Germany, Israel, Russia, UAE",
+                mainMarketsHelp: "This helps us adjust the tone and examples",
+                
+                // Section 5
+                section5Title: "Systems & Integrations",
+                pmsSystem: "Property Management System (PMS)",
+                pmsOther: "Other",
+                pmsNone: "We don't use a PMS",
+                otherPMSLabel: "Please specify which PMS you use:",
+                otherPMSPlaceholder: "e.g. MyHotelPMS, HospitalitySystem",
+                channelManager: "Channel Manager / Booking Engine",
+                channelManagerPlaceholder: "e.g. Your channel manager or booking engine",
+                integrationLevel: "Desired integration level",
+                integrationFull: "Full Integration with PMS (real-time availability, bookings)",
+                integrationLead: "Lead Capture (AI sends email / WhatsApp / SMS to reception / real person)",
+                integrationNotSure: "Not sure - need consultation",
+                leadCaptureChannelsLabel: "How would you like to receive lead information? (Select all that apply)",
+                channelEmail: "Email",
+                channelWhatsApp: "WhatsApp",
+                channelSMS: "SMS",
+                channelOther: "Other",
+                otherChannelLabel: "Please specify your preferred method:",
+                otherChannelPlaceholder: "e.g. Telegram, Slack, Custom API",
+                otherChannelHelp: "e.g. Telegram, Slack, Custom API, etc.",
+                
+                // Section 6
+                section6Title: "Priorities & Goals",
+                prioritiesLabel: "Which 1-3 use cases are most urgent for you?",
+                prioritiesHelp: "Select the most important:",
+                priorityMissed: "Reduce missed calls",
+                priorityVIP: "Improve VIP experience",
+                priorityWorkload: "Reduce front desk workload from repetitive questions",
+                priorityBookings: "Increase direct bookings (instead of OTA)",
+                priorityUpsell: "Upselling: spa, late checkout, dining, etc.",
+                priorityAfterHours: "After-hours coverage (late night / early morning)",
+                priorityConsistency: "Consistency in service quality across shifts",
+                priorityAnalytics: "Detailed call logging & analytics",
+                
+                // Section 7
+                section7Title: "Data & Privacy",
+                recordingsConsentLabel: "I understand and agree that calls will be recorded for quality assurance and training purposes.",
+                recordingsConsentNote: "(This will be formally documented in the service agreement for GDPR compliance)",
+                
+                // Section 8
+                section8Title: "Implementation Approach",
+                implementationLabel: "How would you like to start?",
+                implPilot: "Start with pilot (1 department, 1 month trial)",
+                implFull: "Full deployment across selected departments",
+                implPhased: "Phased rollout (priority departments first)",
+                
+                // Section 9
+                section9Title: "Contact Information",
+                contactName: "Contact Name",
+                contactNamePlaceholder: "e.g. John Smith",
+                contactRole: "Position / Role",
+                contactRolePlaceholder: "e.g. General Manager, F&B Manager",
+                contactEmail: "Email",
+                contactPhone: "Phone",
+                additionalNotes: "Additional notes or questions",
+                additionalNotesPlaceholder: "Anything else you'd like to tell us...",
+                
+                // Buttons
+                exportBtn: "Export Data (JSON)",
+                submitBtn: "Submit Form",
+                removeBtn: "Remove"
+            },
+            el: {
+                languageLabel: "Γλώσσα:",
+                headerTitle: "Hotel AI Discovery Form",
+                headerDescription: "Ας γνωρίσουμε τις ανάγκες του ξενοδοχείου σας για να σχεδιάσουμε την ιδανική λύση AI voice assistant.",
+                
+                // Section 1
+                section1Title: "Βασικά Στοιχεία Ξενοδοχείου",
+                hotelName: "Όνομα Ξενοδοχείου",
+                hotelNamePlaceholder: "π.χ. Seaside Grand Hotel",
+                hotelBrand: "Brand / Chain",
+                hotelBrandPlaceholder: "π.χ. Premium Collection, ανεξάρτητο",
+                hotelAddress: "Διεύθυνση",
+                hotelAddressPlaceholder: "π.χ. 123 Seaside Avenue, Limassol, 3000, Cyprus",
+                hotelCategory: "Κατηγορία Ξενοδοχείου",
+                hotelCategoryHelp: "Επιλέξτε όλα όσα ισχύουν:",
+                catBoutique: "Boutique Hotel",
+                catResort: "Resort",
+                catLuxury: "Premium Collection",
+                catBeach: "Παραλιακό Ξενοδοχείο",
+                catCity: "Πολιτικό Ξενοδοχείο",
+                customerType: "Τύπος Πελατών",
+                customerTypeHelp: "Επιλέξτε όλα όσα ισχύουν:",
+                guestBusiness: "Επαγγελματικοί Ταξιδιώτες",
+                guestLeisure: "Αναψυχή / Διακοπές",
+                guestFamilies: "Οικογένειες",
+                guestCouples: "Μόνο Ζευγάρια",
+                guestAllInclusive: "All-Inclusive",
+                guestLuxury: "Πολυτέλεια / VIP",
+                operationPeriod: "Περίοδος Λειτουργίας",
+                selectOption: "Επιλέξτε...",
+                opYearRound: "Όλο τον χρόνο",
+                opSeasonal: "Εποχικό",
+                seasonalMonthsLabel: "Παρακαλώ καθορίστε την περίοδο λειτουργίας σας:",
+                fromMonth: "Από Μήνα",
+                toMonth: "Έως Μήνα",
+                monthJan: "Ιανουάριος",
+                monthFeb: "Φεβρουάριος",
+                monthMar: "Μάρτιος",
+                monthApr: "Απρίλιος",
+                monthMay: "Μάιος",
+                monthJun: "Ιούνιος",
+                monthJul: "Ιούλιος",
+                monthAug: "Αύγουστος",
+                monthSep: "Σεπτέμβριος",
+                monthOct: "Οκτώβριος",
+                monthNov: "Νοέμβριος",
+                monthDec: "Δεκέμβριος",
+                
+                // Section 2
+                section2Title: "Τι θέλετε να αυτοματοποιήσετε;",
+                section2Help: "Επιλέξτε όλα τα τμήματα που σας ενδιαφέρουν:",
+                deptFrontDesk: "Reception / Υποδοχή",
+                deptReservations: "Κρατήσεις Δωματίων",
+                deptRestaurantBar: "Κρατήσεις Εστιατορίου / Bar",
+                deptRoomService: "Υπηρεσία Δωματίων",
+                deptSpa: "Spa",
+                deptEvents: "Εκδηλώσεις / Γάμοι / Συνέδρια",
+                deptHousekeeping: "Καθαριότητα / Συντήρηση",
+                otherDepartments: "Άλλα Τμήματα:",
+                addDepartmentBtn: "+ Προσθήκη Τμήματος",
+                
+                // Section 3
+                section3Title: "Όγκοι & Ωράρια Κλήσεων",
+                avgCallsPeak: "Μέσος αριθμός κλήσεων ανά ημέρα (Υψηλή Σεζόν)",
+                avgCallsPeakHelp: "π.χ. Ιούλιος-Αύγουστος για καλοκαιρινούς προορισμούς",
+                avgCallsLow: "Μέσος αριθμός κλήσεων ανά ημέρα (Χαμηλή Σεζόν)",
+                avgCallsLowHelp: "π.χ. Νοέμβριος-Μάρτιος για εποχικά ξενοδοχεία",
+                approxCalls: "Περίπου πόσες κλήσεις την ημέρα;",
+                approxCallsPlaceholder: "π.χ. 450",
+                approxCallsHelp: "Παρακαλώ καθορίστε για πιο ακριβή τιμολόγηση",
+                callVolLow: "Χαμηλός (1-50 κλήσεις/ημέρα)",
+                callVolMedium: "Μέτριος (50-150 κλήσεις/ημέρα)",
+                callVolHigh: "Υψηλός (150-300 κλήσεις/ημέρα)",
+                callVolVeryHigh: "Πολύ Υψηλός (300+ κλήσεις/ημέρα)",
+                concurrentCalls: "Πόσες ταυτόχρονες κλήσεις θα σας ικανοποιούσαν;",
+                concurrentCallsPlaceholder: "π.χ. 5",
+                concurrentCallsHelp: "Αριθμός κλήσεων που μπορούν να χειριστούν ταυτόχρονα από το σύστημα AI (ανά τμήμα)",
+                peakHours: "Ώρες αιχμής κλήσεων",
+                peakHoursPlaceholder: "π.χ. 09:00-12:00 & 18:00-21:00",
+                peakHoursHelp: "Πότε δέχεστε τις περισσότερες κλήσεις;",
+                
+                // Section 4
+                section4Title: "Γλώσσες & Αγορές",
+                languagesNeeded: "Γλώσσες που χρειάζεστε",
+                languagesNeededHelp: "Επιλέξτε όλες τις γλώσσες που χρειάζεστε:",
+                languageSearchPlaceholder: "Αναζήτηση γλωσσών...",
+                mainMarkets: "Κύριες αγορές πελατών",
+                mainMarketsPlaceholder: "π.χ. UK, Germany, Israel, Russia, UAE",
+                mainMarketsHelp: "Αυτό μας βοηθά να προσαρμόσουμε τον τόνο και τα παραδείγματα",
+                
+                // Section 5
+                section5Title: "Συστήματα & Ενσωματώσεις",
+                pmsSystem: "Σύστημα Διαχείρισης Ξενοδοχείου (PMS)",
+                pmsOther: "Άλλο",
+                pmsNone: "Δεν χρησιμοποιούμε PMS",
+                otherPMSLabel: "Παρακαλώ καθορίστε ποιο PMS χρησιμοποιείτε:",
+                otherPMSPlaceholder: "π.χ. MyHotelPMS, HospitalitySystem",
+                channelManager: "Διαχειριστής Καναλιών / Μηχανή Κρατήσεων",
+                channelManagerPlaceholder: "π.χ. Ο διαχειριστής καναλιών ή η μηχανή κρατήσεων σας",
+                integrationLevel: "Επίπεδο ενσωμάτωσης που επιθυμείτε",
+                integrationFull: "Πλήρης Ενσωμάτωση με PMS (διαθεσιμότητα και κρατήσεις σε πραγματικό χρόνο)",
+                integrationLead: "Συλλογή Ενδιαφερομένων (το AI στέλνει Email / WhatsApp / SMS στη reception)",
+                integrationNotSure: "Δεν είμαι σίγουρος/η - χρειάζομαι συμβουλευτική",
+                leadCaptureChannelsLabel: "Πώς θα θέλατε να λαμβάνετε τις πληροφορίες των ενδιαφερομένων; (Επιλέξτε όλα όσα ισχύουν)",
+                channelEmail: "Email",
+                channelWhatsApp: "WhatsApp",
+                channelSMS: "SMS",
+                channelOther: "Άλλο",
+                otherChannelLabel: "Παρακαλώ καθορίστε την προτιμώμενη μέθοδό σας:",
+                otherChannelPlaceholder: "π.χ. Telegram, Slack, Custom API",
+                otherChannelHelp: "π.χ. Telegram, Slack, Custom API, κλπ.",
+                
+                // Section 6
+                section6Title: "Προτεραιότητες & Στόχοι",
+                prioritiesLabel: "Ποιες 1-3 περιπτώσεις χρήσης είναι πιο επείγουσες για εσάς;",
+                prioritiesHelp: "Επιλέξτε τις σημαντικότερες:",
+                priorityMissed: "Μείωση χαμένων κλήσεων",
+                priorityVIP: "Βελτίωση εμπειρίας VIP",
+                priorityWorkload: "Μείωση φόρτου εργασίας της reception από επαναλαμβανόμενες ερωτήσεις",
+                priorityBookings: "Αύξηση άμεσων κρατήσεων (αντί μέσω OTA)",
+                priorityUpsell: "Προώθηση πρόσθετων υπηρεσιών: spa, αργή αναχώρηση, εστιατόριο κλπ.",
+                priorityAfterHours: "Κάλυψη εκτός ωραρίου (αργά τη νύχτα / νωρίς το πρωί)",
+                priorityConsistency: "Συνέπεια στην ποιότητα εξυπηρέτησης σε όλες τις βάρδιες",
+                priorityAnalytics: "Λεπτομερής καταγραφή κλήσεων & αναλύσεις",
+                
+                // Section 7
+                section7Title: "Δεδομένα & Απόρρητο",
+                recordingsConsentLabel: "Κατανοώ και συμφωνώ ότι οι κλήσεις θα ηχογραφούνται για σκοπούς διασφάλισης ποιότητας και εκπαίδευσης.",
+                recordingsConsentNote: "(Αυτό θα τεκμηριωθεί επίσημα στη συμφωνία υπηρεσιών για συμμόρφωση με το GDPR)",
+                requiredFieldNote: "* Υποχρεωτικό πεδίο - Πρέπει να συμφωνήσετε για να προχωρήσετε",
+                
+                // Section 8
+                section8Title: "Προσέγγιση Υλοποίησης",
+                implementationLabel: "Πώς θα θέλατε να ξεκινήσουμε;",
+                implPilot: "Ξεκίνημα με πιλοτικό πρόγραμμα (1 τμήμα, δοκιμή 1 μήνα)",
+                implFull: "Πλήρης εγκατάσταση σε όλα τα επιλεγμένα τμήματα",
+                implPhased: "Σταδιακή εφαρμογή (πρώτα τα τμήματα προτεραιότητας)",
+                
+                // Section 9
+                section9Title: "Στοιχεία Επικοινωνίας",
+                contactName: "Όνομα Επικοινωνίας",
+                contactNamePlaceholder: "π.χ. Γιώργος Παπαδόπουλος",
+                contactRole: "Θέση / Ρόλος",
+                contactRolePlaceholder: "π.χ. General Manager, F&B Manager",
+                contactEmail: "Email",
+                contactPhone: "Τηλέφωνο",
+                additionalNotes: "Επιπλέον σημειώσεις ή ερωτήσεις",
+                additionalNotesPlaceholder: "Οτιδήποτε άλλο θέλετε να μας πείτε...",
+                
+                // Buttons
+                exportBtn: "Εξαγωγή Δεδομένων (JSON)",
+                submitBtn: "Υποβολή Φόρμας",
+                removeBtn: "Αφαίρεση"
+            }
+        };
+
+        let currentLang = 'en';
+        let departmentCounter = 0;
+
+        // Helper function to get month name
+        function getMonthName(monthNum) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+            return months[monthNum - 1] || '';
+        }
+
+        // Toggle approximate call field for Very High selection
+        function toggleApproxField(season) {
+            const selectElement = document.getElementById(`call-volume-${season}`);
+            const approxField = document.getElementById(`approx-${season}`);
+            
+            if (selectElement.value === 'very-high') {
+                approxField.style.display = 'block';
+                approxField.classList.add('active');
+            } else {
+                approxField.style.display = 'none';
+                approxField.classList.remove('active');
+                // Clear the input when hidden
+                const input = approxField.querySelector('input');
+                if (input) input.value = '';
+            }
+        }
+
+        // Toggle seasonal months fields
+        function toggleSeasonalMonths() {
+            const operationPeriod = document.getElementById('operation-period');
+            const seasonalMonths = document.getElementById('seasonal-months');
+            
+            if (operationPeriod.value === 'seasonal') {
+                seasonalMonths.style.display = 'block';
+                seasonalMonths.classList.add('active');
+            } else {
+                seasonalMonths.style.display = 'none';
+                seasonalMonths.classList.remove('active');
+                // Clear selections when hidden
+                document.getElementById('operation-from-month').value = '';
+                document.getElementById('operation-to-month').value = '';
+            }
+        }
+
+        // Toggle Other PMS field
+        function toggleOtherPMS() {
+            const pmsSystem = document.getElementById('pms-system');
+            const otherPMS = document.getElementById('other-pms');
+            
+            if (pmsSystem.value === 'other') {
+                otherPMS.style.display = 'block';
+                otherPMS.classList.add('active');
+            } else {
+                otherPMS.style.display = 'none';
+                otherPMS.classList.remove('active');
+                // Clear input when hidden
+                const input = otherPMS.querySelector('input');
+                if (input) input.value = '';
+            }
+        }
+
+        // Toggle Lead Capture channels field
+        function toggleLeadCaptureChannels() {
+            const integrationLevel = document.querySelector('input[name="integration-level"]:checked');
+            const leadCaptureChannels = document.getElementById('lead-capture-channels');
+            
+            if (integrationLevel && integrationLevel.value === 'lead-capture') {
+                leadCaptureChannels.style.display = 'block';
+                leadCaptureChannels.classList.add('active');
+            } else {
+                leadCaptureChannels.style.display = 'none';
+                leadCaptureChannels.classList.remove('active');
+                // Clear all channel checkboxes when hidden
+                document.querySelectorAll('input[name="lead-channels"]').forEach(cb => cb.checked = false);
+                // Clear other channel field
+                document.getElementById('other-channel').style.display = 'none';
+                const otherInput = document.querySelector('input[name="other-channel-method"]');
+                if (otherInput) otherInput.value = '';
+            }
+        }
+
+        // Toggle Other channel field
+        function toggleOtherChannel() {
+            const otherCheckbox = document.getElementById('channel-other');
+            const otherChannel = document.getElementById('other-channel');
+            
+            if (otherCheckbox.checked) {
+                otherChannel.style.display = 'block';
+            } else {
+                otherChannel.style.display = 'none';
+                // Clear input when hidden
+                const input = otherChannel.querySelector('input');
+                if (input) input.value = '';
+            }
+        }
+
+        // Language Search Functionality
+        function filterLanguages() {
+            const searchInput = document.getElementById('language-search-input');
+            const searchTerm = searchInput.value.toLowerCase();
+            const languageItems = document.querySelectorAll('#languages-grid .checkbox-item');
+            
+            languageItems.forEach(item => {
+                const label = item.querySelector('label').textContent.toLowerCase();
+                if (label.includes(searchTerm)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        // Change Language
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            
+            // Update all placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+            
+            // Update month options in seasonal operation fields
+            const monthSelects = ['operation-from-month', 'operation-to-month'];
+            monthSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    const options = select.querySelectorAll('option');
+                    options.forEach(option => {
+                        const key = option.getAttribute('data-i18n');
+                        if (key && translations[lang][key]) {
+                            option.textContent = translations[lang][key];
+                        }
+                    });
+                }
+            });
+            
+            // Update add department button text
+            const addDeptBtn = document.querySelector('.add-field-btn span');
+            if (addDeptBtn) {
+                addDeptBtn.textContent = translations[lang].addDepartmentBtn;
+            }
+            
+            // Update remove buttons
+            document.querySelectorAll('.remove-field-btn').forEach(btn => {
+                btn.textContent = translations[lang].removeBtn;
+            });
+        }
+
+        // Add other department field
+        function addOtherDepartment() {
+            departmentCounter++;
+            const container = document.getElementById('other-departments-container');
+            const fieldDiv = document.createElement('div');
+            fieldDiv.className = 'dynamic-field';
+            fieldDiv.innerHTML = `
+                <input type="text" name="other-department-${departmentCounter}" placeholder="${currentLang === 'en' ? 'e.g. Kids Club, Pool Bar, Beach Service...' : 'π.χ. Kids Club, Pool Bar, Beach Service...'}">
+                <button type="button" class="remove-field-btn" onclick="removeDepartmentField(this)">${translations[currentLang].removeBtn}</button>
+            `;
+            container.appendChild(fieldDiv);
+        }
+
+        function removeDepartmentField(button) {
+            button.parentElement.remove();
+        }
+
+        // Update checkbox styles
+        function updateCheckboxStyles() {
+            document.querySelectorAll('.checkbox-item').forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                if (checkbox && checkbox.checked) {
+                    item.classList.add('checked');
+                } else {
+                    item.classList.remove('checked');
+                }
+            });
+        }
+
+        // Update radio styles
+        function updateRadioStyles() {
+            document.querySelectorAll('.radio-item').forEach(item => {
+                const radio = item.querySelector('input[type="radio"]');
+                if (radio && radio.checked) {
+                    item.parentElement.querySelectorAll('.radio-item').forEach(sibling => {
+                        sibling.classList.remove('selected');
+                    });
+                    item.classList.add('selected');
+                }
+            });
+        }
+
+        // Download form data as PDF
+        async function downloadPDF() {
+            try {
+                console.log('=== GENERATING PDF ===');
+                
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Collect form data
+                const formData = new FormData(document.getElementById('discoveryForm'));
+                const data = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    if (!data[key]) {
+                        data[key] = value;
+                    } else {
+                        if (!Array.isArray(data[key])) {
+                            data[key] = [data[key]];
+                        }
+                        data[key].push(value);
+                    }
+                }
+                
+                // Convert arrays to comma-separated strings
+                for (let key in data) {
+                    if (Array.isArray(data[key])) {
+                        data[key] = data[key].join(', ');
+                    }
+                }
+                
+                // PDF Styling
+                const pageWidth = doc.internal.pageSize.getWidth();
+                let yPos = 20;
+                
+                // Header
+                doc.setFillColor(20, 52, 164); // Egyptian Blue
+                doc.rect(0, 0, pageWidth, 35, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(24);
+                doc.text('SpotzyAI', 15, 15);
+                doc.setFontSize(12);
+                doc.text('Hotel AI Discovery Form', 15, 25);
+                
+                yPos = 45;
+                doc.setTextColor(0, 0, 0);
+                
+                // Helper function to add section
+                function addSection(title) {
+                    if (yPos > 270) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.setFontSize(14);
+                    doc.setFont(undefined, 'bold');
+                    doc.text(title, 15, yPos);
+                    yPos += 8;
+                    doc.setLineWidth(0.5);
+                    doc.line(15, yPos, pageWidth - 15, yPos);
+                    yPos += 5;
+                }
+                
+                // Helper function to add field
+                function addField(label, value) {
+                    if (!value || value === 'undefined') return;
+                    if (yPos > 275) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.setFontSize(10);
+                    doc.setFont(undefined, 'bold');
+                    doc.text(label + ':', 15, yPos);
+                    doc.setFont(undefined, 'normal');
+                    const lines = doc.splitTextToSize(String(value), pageWidth - 35);
+                    doc.text(lines, 15, yPos + 5);
+                    yPos += (lines.length * 5) + 5;
+                }
+                
+                // Basic Information
+                addSection('Hotel Information');
+                addField('Hotel Name', data['hotel-name']);
+                addField('Address', data['hotel-address']);
+                addField('Brand/Chain', data['hotel-brand']);
+                addField('Category', data['hotel-category']);
+                addField('Customer Types', data['customer-type']);
+                addField('Operation Period', data['operation-period']);
+                
+                // Departments
+                yPos += 3;
+                addSection('Departments & Services');
+                addField('Departments', data['departments']);
+                if (data['other-departments']) {
+                    addField('Other Departments', data['other-departments']);
+                }
+                
+                // Call Volumes
+                yPos += 3;
+                addSection('Call Volumes & Hours');
+                addField('Peak Season Volume', data['call-volume-peak']);
+                if (data['approx-calls-peak']) {
+                    addField('Peak Season (Approx)', data['approx-calls-peak'] + ' calls/day');
+                }
+                addField('Low Season Volume', data['call-volume-low']);
+                addField('Concurrent Calls', data['concurrent-calls']);
+                addField('Peak Hours', data['peak-hours']);
+                
+                // Languages
+                yPos += 3;
+                addSection('Languages & Markets');
+                addField('Languages', data['languages']);
+                addField('Main Markets', data['main-markets']);
+                
+                // Technology
+                yPos += 3;
+                addSection('Technology Integration');
+                addField('PMS System', data['pms-system']);
+                if (data['other-pms-name']) {
+                    addField('PMS Details', data['other-pms-name']);
+                }
+                addField('Channel Manager', data['channel-manager']);
+                addField('Integration Level', data['integration-level']);
+                if (data['lead-channels']) {
+                    addField('Lead Channels', Array.isArray(data['lead-channels']) ? data['lead-channels'].join(', ') : data['lead-channels']);
+                }
+                
+                // Priorities
+                yPos += 3;
+                addSection('Business Priorities');
+                addField('Priorities', data['priorities']);
+                
+                // Implementation
+                yPos += 3;
+                addSection('Implementation');
+                addField('Approach', data['implementation']);
+                
+                // Contact
+                yPos += 3;
+                addSection('Contact Information');
+                addField('Name', data['contact-name']);
+                addField('Role', data['contact-role']);
+                addField('Email', data['contact-email']);
+                addField('Phone', data['contact-phone']);
+                
+                // Additional Notes
+                if (data['additional-notes']) {
+                    yPos += 3;
+                    addSection('Additional Notes');
+                    addField('Notes', data['additional-notes']);
+                }
+                
+                // Footer
+                doc.setFontSize(8);
+                doc.setTextColor(128, 128, 128);
+                const timestamp = new Date().toLocaleString();
+                doc.text('Generated: ' + timestamp, 15, doc.internal.pageSize.getHeight() - 10);
+                doc.text('SpotzyAI - SPOTZY TECH LTD', pageWidth - 15, doc.internal.pageSize.getHeight() - 10, { align: 'right' });
+                
+                // Generate filename
+                const hotelName = (data['hotel-name'] || 'Hotel').replace(/[^a-z0-9]/gi, '_');
+                const date = new Date().toISOString().split('T')[0];
+                const filename = `Hotel_Discovery_${hotelName}_${date}.pdf`;
+                
+                // Save PDF
+                doc.save(filename);
+                
+                console.log('PDF generated:', filename);
+                alert('✓ PDF downloaded successfully!\n\nFile: ' + filename);
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('❌ Error generating PDF:\n\n' + error.message + '\n\nPlease make sure the form has data filled in.');
+            }
+        }
+
+        // Generate screenshot of the actual filled form
+        async function generateFormSummaryImage(data) {
+            try {
+                console.log('Taking screenshot of the actual filled form...');
+                
+                // Hide buttons temporarily for cleaner screenshot
+                const actionButtons = document.querySelector('.action-buttons');
+                const languageSelector = document.querySelector('.language-selector');
+                
+                if (actionButtons) actionButtons.style.display = 'none';
+                if (languageSelector) languageSelector.style.display = 'none';
+                
+                // Scroll to top to capture full form
+                const currentScroll = window.scrollY;
+                window.scrollTo(0, 0);
+                
+                // Wait a moment for render
+                await new Promise(resolve => setTimeout(resolve, 200));
+                
+                // Get the form container
+                const formContainer = document.querySelector('.form-container');
+                
+                // Take screenshot of the entire form with all filled fields visible
+                const canvas = await html2canvas(formContainer, {
+                    backgroundColor: '#ffffff',
+                    scale: 2.0, // HIGH quality - 2x resolution
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true,
+                    scrollY: 0,
+                    scrollX: 0,
+                    windowHeight: formContainer.scrollHeight + 100,
+                    height: formContainer.scrollHeight + 100
+                });
+                
+                // Restore buttons and scroll
+                if (actionButtons) actionButtons.style.display = '';
+                if (languageSelector) languageSelector.style.display = '';
+                window.scrollTo(0, currentScroll);
+                
+                // Convert to Base64 JPEG with HIGH quality (90%)
+                const imageBase64 = canvas.toDataURL('image/jpeg', 0.90).split(',')[1]; // Excellent quality!
+                
+                // Generate filename
+                const hotelName = (data['hotel-name'] || 'Hotel').replace(/[^a-z0-9]/gi, '_').substring(0, 30);
+                const date = new Date().toISOString().split('T')[0];
+                const filename = `Discovery_Form_${hotelName}_${date}.jpg`;
+                
+                const sizeKB = Math.round(imageBase64.length / 1024);
+                console.log('✓ Form screenshot captured successfully');
+                console.log('Image:', canvas.width + 'x' + canvas.height + 'px');
+                console.log('Size:', sizeKB + 'KB (Base64)');
+                
+                return {
+                    base64: imageBase64,
+                    filename: filename,
+                    width: canvas.width,
+                    height: canvas.height
+                };
+                
+            } catch (error) {
+                console.error('Error generating form screenshot:', error);
+                throw error;
+            }
+        }
+
+        // Download form as image
+        async function downloadFormImage() {
+            try {
+                console.log('=== GENERATING FORM SCREENSHOT ===');
+                
+                // Collect form data first
+                const formData = new FormData(document.getElementById('discoveryForm'));
+                const data = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    if (!data[key]) {
+                        data[key] = value;
+                    }
+                }
+                
+                console.log('Form data collected:', Object.keys(data).length, 'fields');
+                
+                // Generate screenshot
+                console.log('Calling generateFormSummaryImage...');
+                const result = await generateFormSummaryImage(data);
+                
+                console.log('Screenshot generated:', result.width + 'x' + result.height + 'px');
+                console.log('Size:', Math.round(result.base64.length / 1024) + 'KB');
+                
+                // Download
+                const link = document.createElement('a');
+                link.href = 'data:image/jpeg;base64,' + result.base64;
+                link.download = result.filename;
+                link.click();
+                
+                alert('✓ Form screenshot downloaded!\n\nFile: ' + result.filename + '\nSize: ' + Math.round(result.base64.length / 1024) + 'KB');
+                
+            } catch (error) {
+                console.error('=== ERROR IN downloadFormImage ===');
+                console.error('Error:', error);
+                console.error('Stack:', error.stack);
+                alert('❌ Error downloading screenshot:\n\n' + error.message + '\n\nCheck console (F12) for details.');
+            }
+        }
+
+        // Fill form with test data for testing
+        function fillTestData() {
+            try {
+                console.log('=== FILLING TEST DATA ===');
+                
+                // Basic Information
+                console.log('Filling basic info...');
+                document.querySelector('input[name="hotel-name"]').value = 'Seaside Grand Hotel';
+                document.querySelector('input[name="hotel-address"]').value = '123 Poseidonos Avenue, Limassol, 3311, Cyprus';
+                document.querySelector('input[name="hotel-brand"]').value = 'Independent Luxury';
+                
+                // Hotel Category
+                console.log('Filling hotel category...');
+                if (document.getElementById('cat-5star')) document.getElementById('cat-5star').checked = true;
+                if (document.getElementById('cat-beach')) document.getElementById('cat-beach').checked = true;
+                if (document.getElementById('cat-resort')) document.getElementById('cat-resort').checked = true;
+                
+                // Customer Type
+                console.log('Filling customer type...');
+                if (document.getElementById('customer-leisure')) document.getElementById('customer-leisure').checked = true;
+                if (document.getElementById('customer-families')) document.getElementById('customer-families').checked = true;
+                if (document.getElementById('customer-couples')) document.getElementById('customer-couples').checked = true;
+                
+                // Operation Period
+                console.log('Filling operation period...');
+                document.getElementById('operation-period').value = 'seasonal';
+                if (typeof toggleSeasonalMonths === 'function') {
+                    toggleSeasonalMonths();
+                    setTimeout(() => {
+                        document.getElementById('operation-from-month').value = '4';
+                        document.getElementById('operation-to-month').value = '10';
+                    }, 100);
+                }
+                
+                // Departments
+                console.log('Filling departments...');
+                if (document.getElementById('dept-front-desk')) document.getElementById('dept-front-desk').checked = true;
+                if (document.getElementById('dept-reservations')) document.getElementById('dept-reservations').checked = true;
+                if (document.getElementById('dept-restaurant-bar')) document.getElementById('dept-restaurant-bar').checked = true;
+                if (document.getElementById('dept-spa')) document.getElementById('dept-spa').checked = true;
+                
+                // Call Volumes
+                console.log('Filling call volumes...');
+                document.getElementById('call-volume-peak').value = 'very-high';
+                if (typeof toggleApproxField === 'function') {
+                    toggleApproxField('peak');
+                    setTimeout(() => {
+                        const approxInput = document.querySelector('input[name="approx-calls-peak"]');
+                        if (approxInput) approxInput.value = '450';
+                    }, 100);
+                }
+                
+                document.getElementById('call-volume-low').value = 'medium';
+                
+                document.querySelector('input[name="concurrent-calls"]').value = '8';
+                document.querySelector('input[name="peak-hours"]').value = '09:00-12:00 & 18:00-21:00';
+                
+                // Languages
+                console.log('Filling languages...');
+                const languageIds = ['english', 'greek', 'russian', 'german', 'french', 'italian', 'hebrew', 'arabic', 'polish', 'swedish'];
+                languageIds.forEach(lang => {
+                    const checkbox = document.getElementById('lang-' + lang);
+                    if (checkbox) checkbox.checked = true;
+                });
+                
+                // Main Markets
+                console.log('Filling main markets...');
+                document.querySelector('input[name="main-markets"]').value = 'UK, Germany, Israel, Russia, Scandinavia';
+                
+                // PMS System
+                console.log('Filling PMS system...');
+                document.getElementById('pms-system').value = 'mews';
+                
+                // Channel Manager
+                console.log('Filling channel manager...');
+                document.querySelector('input[name="channel-manager"]').value = 'Cloudbeds Channel Manager';
+                
+                // Integration Level
+                console.log('Filling integration level...');
+                const integrationLead = document.getElementById('integration-lead');
+                if (integrationLead) {
+                    integrationLead.checked = true;
+                    if (typeof toggleLeadCaptureChannels === 'function') {
+                        toggleLeadCaptureChannels();
+                        setTimeout(() => {
+                            if (document.getElementById('channel-email')) document.getElementById('channel-email').checked = true;
+                            if (document.getElementById('channel-whatsapp')) document.getElementById('channel-whatsapp').checked = true;
+                            if (document.getElementById('channel-sms')) document.getElementById('channel-sms').checked = true;
+                        }, 100);
+                    }
+                }
+                
+                // Priorities
+                console.log('Filling priorities...');
+                if (document.getElementById('priority-missed')) document.getElementById('priority-missed').checked = true;
+                if (document.getElementById('priority-vip')) document.getElementById('priority-vip').checked = true;
+                if (document.getElementById('priority-workload')) document.getElementById('priority-workload').checked = true;
+                
+                // GDPR Consent
+                console.log('Filling GDPR consent...');
+                if (document.getElementById('call-recordings-consent')) document.getElementById('call-recordings-consent').checked = true;
+                
+                // Implementation
+                console.log('Filling implementation...');
+                if (document.getElementById('impl-pilot')) document.getElementById('impl-pilot').checked = true;
+                
+                // Contact Information
+                console.log('Filling contact info...');
+                document.querySelector('input[name="contact-name"]').value = 'Nikolas Georgiou';
+                document.querySelector('input[name="contact-role"]').value = 'General Manager';
+                document.querySelector('input[name="contact-email"]').value = 'nikolasgr004@gmail.com';
+                document.querySelector('input[name="contact-phone"]').value = '+357 99 123456';
+                
+                // Additional Notes
+                console.log('Filling additional notes...');
+                document.querySelector('textarea[name="additional-notes"]').value = 'Looking to automate our reservation system for the upcoming summer season. We receive a lot of international calls and need multilingual support. Interested in starting with a pilot program at our front desk and spa departments.';
+                
+                // Update checkbox/radio styles
+                console.log('Updating styles...');
+                if (typeof updateCheckboxStyles === 'function') updateCheckboxStyles();
+                if (typeof updateRadioStyles === 'function') updateRadioStyles();
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                alert('✓ Test data filled!\n\nReview the form and click Submit when ready.');
+                
+                console.log('Test data filled successfully');
+            } catch (error) {
+                console.error('Error filling test data:', error);
+                alert('❌ Error filling test data:\n\n' + error.message + '\n\nCheck console for details.');
+            }
+        }
+
+        // Test webhook with minimal data
+        async function testWebhook() {
+            try {
+                console.log('=== TESTING WEBHOOK ===');
+                
+                const testData = {
+                test: true,
+                message: "Test from Discovery Form",
+                timestamp: new Date().toISOString(),
+                "hotel-name": "Test Hotel",
+                "contact-name": "Test User",
+                "contact-email": "test@example.com"
+            };
+            
+            console.log('Sending test data:', testData);
+            
+            const response = await fetch('https://hook.eu2.make.com/7gs231o66oaokmhn7t6yfzr7dhm2i1ss', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response OK:', response.ok);
+                
+                const responseText = await response.text();
+                console.log('Response body:', responseText);
+                
+                if (response.ok) {
+                    alert('✅ Webhook test successful!\n\nStatus: ' + response.status + '\nCheck Make.com scenario for the test data.');
+                } else {
+                    alert('⚠️ Webhook test failed!\n\nStatus: ' + response.status + '\nCheck console for details.');
+                }
+            } catch (error) {
+                console.error('Test error:', error);
+                alert('❌ Webhook test error!\n\n' + error.message + '\n\nCheck console for details.');
+            }
+        }
+
+        // Export data as JSON
+        function exportData() {
+            try {
+                console.log('=== EXPORTING DATA ===');
+                const form = document.getElementById('discoveryForm');
+                const formData = new FormData(form);
+                const data = {};
+
+            for (let [key, value] of formData.entries()) {
+                if (key === 'departments' || key === 'hotel-category' || key === 'customer-type' || 
+                    key === 'languages' || key === 'priorities' || key === 'lead-channels') {
+                    if (!data[key]) {
+                        data[key] = [];
+                    }
+                    data[key].push(value);
+                } else if (key.startsWith('other-department-')) {
+                    if (!data['other-departments']) {
+                        data['other-departments'] = [];
+                    }
+                    data['other-departments'].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // Add structured call volume data
+            if (data['call-volume-peak'] && data['call-volume-low']) {
+                data['call-volumes'] = {
+                    peak_season: data['call-volume-peak'],
+                    low_season: data['call-volume-low']
+                };
+                
+                // Add approximate numbers if Very High is selected
+                if (data['call-volume-peak'] === 'very-high' && data['approx-calls-peak']) {
+                    data['call-volumes'].peak_season_approx = parseInt(data['approx-calls-peak']);
+                }
+                if (data['call-volume-low'] === 'very-high' && data['approx-calls-low']) {
+                    data['call-volumes'].low_season_approx = parseInt(data['approx-calls-low']);
+                }
+            }
+            
+            // Add operation period details
+            if (data['operation-period'] === 'seasonal') {
+                if (data['operation-from-month'] && data['operation-to-month']) {
+                    data['operation-details'] = {
+                        type: data['operation-period'],
+                        from_month: parseInt(data['operation-from-month']),
+                        to_month: parseInt(data['operation-to-month']),
+                        months_open: getMonthName(parseInt(data['operation-from-month'])) + ' - ' + getMonthName(parseInt(data['operation-to-month']))
+                    };
+                }
+            }
+            
+            // Add PMS details with Other PMS name if applicable
+            if (data['pms-system'] === 'other' && data['other-pms-name']) {
+                data['pms-details'] = {
+                    type: 'other',
+                    name: data['other-pms-name']
+                };
+            }
+            
+            // Add recordings consent status
+            if (data['call-recordings-consent']) {
+                data['gdpr-consent'] = {
+                    call_recordings: true,
+                    acknowledged: true,
+                    timestamp: new Date().toISOString()
+                };
+            }
+            
+            // Add Lead Capture channels if applicable
+            if (data['integration-level'] === 'lead-capture' && data['lead-channels']) {
+                data['lead-capture-details'] = {
+                    channels: data['lead-channels'],
+                    other_method: data['other-channel-method'] || null
+                };
+            }
+
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${data['hotel-name'] || 'hotel'}_discovery.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            
+            console.log('✓ Export completed successfully');
+            alert('✓ Data exported successfully!');
+            
+            } catch (error) {
+                console.error('=== ERROR IN exportData ===');
+                console.error('Error:', error);
+                alert('❌ Error exporting data:\n\n' + error.message);
+            }
+        }
+
+        // Form submission
+        document.getElementById('discoveryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const submitBtn = this.querySelector('.btn-primary');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = currentLang === 'en' ? 'Submitting...' : 'Υποβολή...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Collect form data
+                const formData = new FormData(this);
+                const data = {};
+                
+                // Arrays to collect multiple values
+                const arrays = {
+                    'departments': [],
+                    'hotel-category': [],
+                    'customer-type': [],
+                    'languages': [],
+                    'priorities': [],
+                    'lead-channels': [],
+                    'other-departments': []
+                };
+
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'departments' || key === 'hotel-category' || key === 'customer-type' || 
+                        key === 'languages' || key === 'priorities' || key === 'lead-channels') {
+                        arrays[key].push(value);
+                    } else if (key.startsWith('other-department-')) {
+                        arrays['other-departments'].push(value);
+                    } else {
+                        data[key] = value;
+                    }
+                }
+                
+                // Convert arrays to comma-separated strings
+                for (let [key, values] of Object.entries(arrays)) {
+                    if (values.length > 0) {
+                        data[key] = values.join(', ');
+                    }
+                }
+                
+                // Add structured call volume data as flat fields
+                if (data['call-volume-peak']) {
+                    data['call-volume-peak-category'] = data['call-volume-peak'];
+                }
+                if (data['call-volume-low']) {
+                    data['call-volume-low-category'] = data['call-volume-low'];
+                }
+                if (data['approx-calls-peak']) {
+                    data['call-volume-peak-approx'] = parseInt(data['approx-calls-peak']);
+                }
+                if (data['approx-calls-low']) {
+                    data['call-volume-low-approx'] = parseInt(data['approx-calls-low']);
+                }
+                
+                // Add operation period details
+                if (data['operation-period'] === 'seasonal') {
+                    if (data['operation-from-month'] && data['operation-to-month']) {
+                        data['operation-months'] = getMonthName(parseInt(data['operation-from-month'])) + ' - ' + getMonthName(parseInt(data['operation-to-month']));
+                    }
+                }
+                
+                // Add PMS other name if applicable
+                if (data['pms-system'] === 'other' && data['other-pms-name']) {
+                    data['pms-system-other-name'] = data['other-pms-name'];
+                }
+                
+                // Add GDPR consent flag
+                if (data['call-recordings-consent']) {
+                    data['gdpr-call-recordings-consent'] = 'Yes';
+                } else {
+                    data['gdpr-call-recordings-consent'] = 'No';
+                }
+                
+                // Add Lead Capture channels
+                if (data['integration-level'] === 'lead-capture' && data['lead-channels']) {
+                    data['lead-channels-selected'] = data['lead-channels'];
+                    if (data['other-channel-method']) {
+                        data['lead-channels-other-method'] = data['other-channel-method'];
+                    }
+                }
+                
+                // Add submission metadata
+                data['submission-timestamp'] = new Date().toISOString();
+                data['form-language'] = currentLang;
+                
+                console.log('=== FORM SUBMISSION ===');
+                console.log('Sending data to webhook...');
+                
+                // Send to Make.com webhook
+                const response = await fetch('https://hook.eu2.make.com/7gs231o66oaokmhn7t6yfzr7dhm2i1ss', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Response status:', response.status);
+                
+                if (response.ok) {
+                    console.log('✓ Data sent successfully!');
+                    
+                    // Now generate and download screenshot
+                    submitBtn.innerHTML = currentLang === 'en' ? 'Generating Screenshot...' : 'Δημιουργία Στιγμιότυπου...';
+                    
+                    try {
+                        console.log('Generating form screenshot...');
+                        const result = await generateFormSummaryImage(data);
+                        
+                        // Auto-download the screenshot
+                        const link = document.createElement('a');
+                        link.href = 'data:image/jpeg;base64,' + result.base64;
+                        link.download = result.filename;
+                        link.click();
+                        
+                        console.log('✓ Screenshot downloaded!');
+                        
+                    } catch (screenshotError) {
+                        console.error('Screenshot generation error:', screenshotError);
+                        // Continue anyway - data was sent successfully
+                    }
+                    
+                    // Success message
+                    const successMessage = currentLang === 'en' 
+                        ? '✓ Thank you! Your information has been successfully submitted.\n\nWe will contact you within 24-48 hours with a customized proposal.\n\nA screenshot has been downloaded to your computer for your records.\n\nConfirmation email: ' + data['contact-email']
+                        : '✓ Ευχαριστούμε! Τα στοιχεία σας υποβλήθηκαν επιτυχώς.\n\nΘα επικοινωνήσουμε μαζί σας εντός 24-48 ωρών με προσαρμοσμένη πρόταση.\n\nΤο στιγμιότυπο οθόνης αποθηκεύτηκε στον υπολογιστή σας.\n\nEmail επιβεβαίωσης: ' + data['contact-email'];
+                    
+                    alert(successMessage);
+                    
+                    // Reset form
+                    this.reset();
+                    
+                    // Reset dynamic fields
+                    document.getElementById('other-departments-container').innerHTML = '';
+                    departmentCounter = 0;
+                    
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                } else {
+                    throw new Error('Server responded with status: ' + response.status);
+                }
+                
+            } catch (error) {
+                console.error('=== SUBMISSION ERROR ===');
+                console.error('Error:', error);
+                
+                const errorMessage = currentLang === 'en'
+                    ? '⚠️ There was an issue submitting the form.\n\nPlease try again or contact us directly:\nEmail: info@spotzyai.com\nPhone: +357 99 123456'
+                    : '⚠️ Υπήρξε πρόβλημα με την υποβολή.\n\nΔοκιμάστε ξανά ή επικοινωνήστε:\nEmail: info@spotzyai.com\nΤηλ: +357 99 123456';
+                
+                alert(errorMessage);
+            } finally {
+                // Restore button state
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make entire checkbox-item clickable
+            document.querySelectorAll('.checkbox-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on the actual input or label
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+                        return;
+                    }
+                    // Find the checkbox inside this item and toggle it
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    if (checkbox) {
+                        checkbox.checked = !checkbox.checked;
+                        // Trigger change event to update styles
+                        checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+            });
+            
+            // Make entire radio-item clickable
+            document.querySelectorAll('.radio-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on the actual input or label
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+                        return;
+                    }
+                    // Find the radio inside this item and select it
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                        // Trigger change event to update styles
+                        radio.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+            });
+            
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateCheckboxStyles);
+            });
+
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', updateRadioStyles);
+            });
+            
+            // Language search listener
+            const languageSearchInput = document.getElementById('language-search-input');
+            if (languageSearchInput) {
+                languageSearchInput.addEventListener('input', filterLanguages);
+            }
+
+            updateCheckboxStyles();
+            updateRadioStyles();
+            
+            // Set default language to English
+            changeLanguage('en');
+        });
+    </script>
+</body>
+</html>
